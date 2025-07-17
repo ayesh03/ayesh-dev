@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
 import Chatbot from './components/Chatbot';
 import RadarChart from './components/RadarChart';
 import GamesHub from './components/games/GamesHub';
+import Image from 'next/image';
 
 export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
@@ -71,7 +72,7 @@ export default function Home() {
       {/* HERO SECTION */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold">Hey, I'm</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">Hey, I&#39;m</h1>
           <h2 className="text-5xl md:text-6xl font-extrabold mt-2">AYESH RANJAN BHUYAN</h2>
           <p className="mt-4 text-lg">
             A <span className="text-cyan-400 font-semibold">Full-Stack</span> Web Developer.
@@ -97,7 +98,12 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center">
-          <img src="/man1.png" alt="Developer Illustration" className="w-[90%] md:w-[80%]" />
+          <Image
+  src="/man1.png"
+  alt="Developer Illustration"
+  className="w-[90%] md:w-[80%]"
+  width={800} height={800}
+/>
         </div>
       </div>
 
@@ -133,7 +139,7 @@ export default function Home() {
       <h2 className="text-2xl font-bold text-white mb-3">Sales Email Generator</h2>
       <p className="text-gray-300 mb-4">
         AI-powered tool to create personalized sales emails using minimal input.
-        Built with Next.js and integrated with OpenAI's GPT API.
+        Built with Next.js and integrated with OpenAI&#39;s GPT API.
       </p>
       <a
         href="https://github.com/ayesh03/Sales-Email-Generator"
@@ -191,14 +197,20 @@ export default function Home() {
   <div className="flex flex-col md:flex-row items-center justify-center gap-24">
     {/* Left Side: Sitting Man Image */}
     <div className="w-[250px] md:w-[300px]">
-      <img src="/man-2.png" alt="Man with Laptop" width={400} height={400} />
+      <Image src="/man-2.png" alt="Man with Laptop" width={400} height={400} />
     </div>
 
     {/* Right Side: Concentric Rings with Skills */}
     <div className="relative w-[400px] h-[400px]">
       {/* CENTER: JavaScript */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" className="w-14 h-14" />
+        <Image
+  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+  alt="JavaScript logo"
+  className="w-14 h-14"
+  width={56} // optional, for better performance
+  height={56} // optional
+/>
       </div>
 
       {/* INNER RING (4 icons) */}
@@ -213,10 +225,13 @@ export default function Home() {
         className="absolute"
         style={{ transform: `translateY(-110px) rotate(${-i * 90}deg)` }}
       >
-        <img
-          src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech}/${tech}-original.svg`}
-          className="w-12 h-12"
-        />
+        <Image
+  src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech}/${tech}-original.svg`}
+  alt={`${tech} logo`}  // ✅ alt added
+  className="w-12 h-12"
+  width={48}
+  height={48}
+/>
       </div>
     </div>
   ))}
@@ -244,10 +259,13 @@ export default function Home() {
               className="absolute"
               style={{ transform: `translateY(-200px) rotate(${-i * 45}deg)` }}
             >
-              <img
-                src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech}/${tech}-original.svg`}
-                className="w-12 h-12"
-              />
+              <Image
+  src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech}/${tech}-original.svg`}
+  alt={`${tech} logo`}
+  className="w-12 h-12"
+  width={48}
+  height={48}
+/>
             </div>
           </div>
         ))}
