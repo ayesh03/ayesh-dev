@@ -24,6 +24,11 @@ const timeline = [
     date: 'Mar 2024 – May 2025',
     description: 'Joined as a full-time software developer, contributed to scalable web apps using React, Angular, Node.js, CI/CD, and testing.',
   }
+  {
+    title: '👨‍💻 Application Developer at Areca Embedded System Pvt Ltd',
+    date: 'July 2025 – Present',
+    description: 'Joined as a full-time software developer, contributed to scalable web apps using React, Angular, Node.js, CI/CD, and testing.',
+  }
 ];
 
 export default function JourneyTimeline({ onClose }) {
