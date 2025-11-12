@@ -23,11 +23,11 @@ const timeline = [
     title: '👨‍💻 Software Developer at Retrack Pvt Ltd',
     date: 'Mar 2024 – May 2025',
     description: 'Joined as a full-time software developer, contributed to scalable web apps using React, Angular, Node.js, CI/CD, and testing.',
-  }
+  },
   {
     title: '👨‍💻 Application Developer at Areca Embedded System Pvt Ltd',
     date: 'July 2025 – Present',
-    description: 'Joined as a full-time software developer, contributed to scalable web apps using React, Angular, Node.js, CI/CD, and testing.',
+    description: 'Joined as a full-time Application developer, contributed to scalable web apps using React, Angular, Node.js, CI/CD, also deploying the apps in cloud platforms and now working on AI projects also maintaining the desktop application using Qt.',
   }
 ];
 
