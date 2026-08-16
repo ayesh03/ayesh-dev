@@ -617,12 +617,12 @@ const response = await ai.models.generateContent({
   console.error("Error stack:", error?.stack);
 
   return Response.json(
-      {
-        error: "Unable to generate AI response.",
-      },
-      {
-        status: 500,
-      }
-    );
+  {
+    error: error?.message || "Unable to generate AI response.",
+  },
+  {
+    status: 500,
+  }
+);
   }
 }
