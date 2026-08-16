@@ -1,33 +1,497 @@
 @import "tailwindcss";
 
+/* =========================================================
+   DESIGN TOKENS
+   ========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050816;
+  --foreground: #f8fafc;
+
+  --surface: rgba(15, 23, 42, 0.72);
+  --surface-solid: #0f172a;
+  --surface-soft: rgba(30, 41, 59, 0.5);
+
+  --border: rgba(148, 163, 184, 0.14);
+  --border-hover: rgba(56, 189, 248, 0.35);
+
+  --muted: #94a3b8;
+  --muted-dark: #64748b;
+
+  --primary: #22d3ee;
+  --primary-soft: rgba(34, 211, 238, 0.12);
+
+  --secondary: #8b5cf6;
+  --secondary-soft: rgba(139, 92, 246, 0.12);
+
+  --success: #34d399;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  padding: 0;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(34, 211, 238, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(139, 92, 246, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #050816 0%,
+      #0a0f24 45%,
+      #080b18 100%
+    );
+
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    var(--font-geist-sans),
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* =========================================================
+   GLOBAL BACKGROUND GRID
+   ========================================================= */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  z-index: -2;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(148, 163, 184, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 60px 60px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    rgba(0, 0, 0, 0.7) 60%,
+    transparent 100%
+  );
+}
+
+/* =========================================================
+   AMBIENT LIGHT
+   ========================================================= */
+
+body::after {
+  content: "";
+
+  position: fixed;
+
+  width: 520px;
+  height: 520px;
+
+  top: -180px;
+  right: -160px;
+
+  border-radius: 50%;
+
+  background: rgba(34, 211, 238, 0.06);
+
+  filter: blur(120px);
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation: ambient-float 12s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: rgba(34, 211, 238, 0.25);
+  color: #ffffff;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050816;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 211, 238, 0.55),
+    rgba(139, 92, 246, 0.55)
+  );
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 211, 238, 0.8),
+    rgba(139, 92, 246, 0.8)
+  );
+}
+
+/* Firefox */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.55) #050816;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* =========================================================
+   GLASS EFFECT
+   ========================================================= */
+
+.glass {
+  background: rgba(15, 23, 42, 0.55);
+
+  border: 1px solid var(--border);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.glass:hover {
+  border-color: var(--border-hover);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.32),
+    0 0 40px rgba(34, 211, 238, 0.05);
+}
+
+/* =========================================================
+   PREMIUM CARD
+   ========================================================= */
+
+.premium-card {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.88),
+      rgba(15, 23, 42, 0.58)
+    );
+
+  border: 1px solid rgba(148, 163, 184, 0.12);
+
+  border-radius: 24px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.22);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.premium-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(34, 211, 238, 0.08),
+      transparent 35%
+    );
+
+  pointer-events: none;
+}
+
+.premium-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(34, 211, 238, 0.25);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.32),
+    0 0 50px rgba(34, 211, 238, 0.05);
+}
+
+/* =========================================================
+   GRADIENT TEXT
+   ========================================================= */
+
+.gradient-text {
+  background:
+    linear-gradient(
+      110deg,
+      #ffffff 10%,
+      #67e8f9 45%,
+      #a78bfa 90%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+/* =========================================================
+   CYAN GLOW
+   ========================================================= */
+
+.cyan-glow {
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.12),
+    0 0 35px rgba(34, 211, 238, 0.08);
+}
+
+.cyan-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.28),
+    0 0 50px rgba(34, 211, 238, 0.14);
+}
+
+/* =========================================================
+   SECTION CONTAINER
+   ========================================================= */
+
+.section-container {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* =========================================================
+   SECTION LABEL
+   ========================================================= */
+
+.section-label {
+  display: inline-flex;
+
+  align-items: center;
+  gap: 8px;
+
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: rgba(34, 211, 238, 0.07);
+
+  border: 1px solid rgba(34, 211, 238, 0.15);
+
+  color: #67e8f9;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   SECTION DIVIDER
+   ========================================================= */
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 80px 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(148, 163, 184, 0.15),
+      transparent
+    );
+}
+
+/* =========================================================
+   ANIMATED BORDER
+   ========================================================= */
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -1px;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(34, 211, 238, 0.6),
+      rgba(139, 92, 246, 0.6),
+      transparent 80%
+    );
+
+  background-size: 200% 200%;
+
+  animation: border-flow 6s linear infinite;
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask-composite: exclude;
+}
+
+/* =========================================================
+   SHIMMER
+   ========================================================= */
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 60%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.06),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  animation: shimmer 4s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   FLOATING ELEMENT
+   ========================================================= */
+
+.float {
+  animation: floating 6s ease-in-out infinite;
+}
+
+/* =========================================================
+   EXISTING SKILL RING ANIMATIONS
+   ========================================================= */
+
 @keyframes spin-slow {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -37,8 +501,9 @@ body {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
-    transform: rotate(-360deg); /* Opposite direction for contrast */
+    transform: rotate(-360deg);
   }
 }
 
@@ -49,16 +514,1251 @@ body {
 .animate-spin-slower {
   animation: spin-slower 35s linear infinite;
 }
+
+/* =========================================================
+   REVEAL ANIMATIONS
+   ========================================================= */
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+/* =========================================================
+   FLOATING ANIMATION
+   ========================================================= */
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* =========================================================
+   AMBIENT BACKGROUND ANIMATION
+   ========================================================= */
+
+@keyframes ambient-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(-80px, 80px, 0) scale(1.15);
+  }
+}
+
+/* =========================================================
+   BORDER FLOW
+   ========================================================= */
+
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* =========================================================
+   SHIMMER ANIMATION
+   ========================================================= */
+
+@keyframes shimmer {
+  0% {
+    left: -120%;
+  }
+
+  55%,
+  100% {
+    left: 150%;
+  }
+}
+
+/* =========================================================
+   PULSE GLOW
+   ========================================================= */
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* =========================================================
+   ROTATE / ORBIT
+   ========================================================= */
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit {
+  animation: orbit 18s linear infinite;
+}
+
+/* =========================================================
+   TERMINAL CURSOR
+   ========================================================= */
+
+.cursor-blink::after {
+  content: "▋";
+
+  margin-left: 4px;
+
+  color: var(--primary);
+
+  animation: cursor-blink 1s steps(2, start) infinite;
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   CODE / TERMINAL
+   ========================================================= */
+
+code,
+pre {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+pre {
+  max-width: 100%;
+}
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
 canvas {
   max-width: 100% !important;
   height: auto !important;
 }
-/* globals.css */
+
+/* =========================================================
+   3D CARD SUPPORT
+   ========================================================= */
+
+.perspective {
+  perspective: 1000px;
+}
+
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
 
 .transition-transform {
-  transition: transform 0.6s;
+  transition: transform 0.6s ease;
 }
 
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.8);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  body::before {
+    background-size: 40px 40px;
+  }
+
+  .section-container {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .section-divider {
+    margin: 55px 0;
+  }
+
+  .premium-card {
+    border-radius: 18px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   AI BACKGROUND SYSTEM
+========================================================= */
+
+.ai-bg-base {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(34, 211, 238, 0.035),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(139, 92, 246, 0.035),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 50% 80%,
+      rgba(34, 211, 238, 0.025),
+      transparent 35%
+    );
+}
+
+
+/* =========================================================
+   AMBIENT GLOWS
+========================================================= */
+
+.ai-glow {
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  border-radius: 9999px;
+
+  filter: blur(120px);
+
+  opacity: 0.12;
+
+  animation: aiGlowMove 18s ease-in-out infinite alternate;
+}
+
+.ai-glow-cyan {
+  left: -120px;
+  top: 20%;
+
+  background: rgba(34, 211, 238, 0.18);
+}
+
+.ai-glow-violet {
+  right: -120px;
+  top: 55%;
+
+  background: rgba(139, 92, 246, 0.16);
+
+  animation-delay: -7s;
+}
+
+
+@keyframes aiGlowMove {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(40px, -30px, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(-25px, 35px, 0) scale(0.95);
+  }
+}
+
+
+/* =========================================================
+   TECHNICAL GRID
+========================================================= */
+
+.ai-grid {
+  position: absolute;
+  inset: -100px;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size: 70px 70px;
+
+  mask-image: radial-gradient(
+    ellipse at center,
+    black 0%,
+    transparent 72%
+  );
+
+  animation: aiGridMove 35s linear infinite;
+}
+
+@keyframes aiGridMove {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(70px, 70px, 0);
+  }
+}
+
+
+/* =========================================================
+   NEURAL NETWORK
+========================================================= */
+
+.ai-network {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.65;
+}
+
+.ai-network svg {
+  overflow: visible;
+}
+
+.ai-network-line {
+  fill: none;
+
+  stroke: url(#ai-line-gradient);
+
+  stroke-width: 0.7;
+
+  stroke-dasharray: 4 10;
+
+  animation: aiLineFlow 12s linear infinite;
+}
+
+@keyframes aiLineFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+
+/* =========================================================
+   NEURAL NODES
+========================================================= */
+
+.ai-node {
+  position: absolute;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 9999px;
+
+  background: rgba(103, 232, 249, 0.8);
+
+  box-shadow:
+    0 0 8px rgba(34, 211, 238, 0.7),
+    0 0 22px rgba(34, 211, 238, 0.18);
+
+  transform: translate(-50%, -50%);
+
+  animation: aiNodePulse 4s ease-in-out infinite;
+}
+
+@keyframes aiNodePulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.35);
+  }
+}
+
+
+/* =========================================================
+   DATA PARTICLES
+========================================================= */
+
+.ai-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.ai-particle {
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 9999px;
+
+  background: rgba(103, 232, 249, 0.7);
+
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.7);
+
+  opacity: 0;
+}
+
+.particle-1 {
+  left: 10%;
+  top: 30%;
+
+  animation: particleFlow1 9s linear infinite;
+}
+
+.particle-2 {
+  left: 35%;
+  top: 70%;
+
+  animation: particleFlow2 12s linear infinite;
+}
+
+.particle-3 {
+  left: 60%;
+  top: 25%;
+
+  animation: particleFlow3 10s linear infinite;
+}
+
+.particle-4 {
+  left: 80%;
+  top: 60%;
+
+  animation: particleFlow4 14s linear infinite;
+}
+
+.particle-5 {
+  left: 25%;
+  top: 50%;
+
+  animation: particleFlow5 11s linear infinite;
+}
+
+.particle-6 {
+  left: 70%;
+  top: 80%;
+
+  animation: particleFlow6 13s linear infinite;
+}
+
+
+@keyframes particleFlow1 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.8;
+  }
+
+  85% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(180px, -100px, 0);
+  }
+}
+
+@keyframes particleFlow2 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-160px, -140px, 0);
+  }
+}
+
+@keyframes particleFlow3 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-120px, 180px, 0);
+  }
+}
+
+@keyframes particleFlow4 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-180px, 100px, 0);
+  }
+}
+
+@keyframes particleFlow5 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.6;
+  }
+
+  85% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(150px, 120px, 0);
+  }
+}
+
+@keyframes particleFlow6 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-130px, -160px, 0);
+  }
+}
+
+
+/* =========================================================
+   AI ORBITAL CORE
+========================================================= */
+
+.ai-orbit-wrapper {
+  position: absolute;
+
+  left: 50%;
+  top: 35%;
+
+  width: 500px;
+  height: 500px;
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0.25;
+}
+
+.ai-orbit {
+  position: absolute;
+
+  inset: 50%;
+
+  width: 100%;
+  height: 100%;
+
+  border: 1px solid rgba(34, 211, 238, 0.09);
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.orbit-1 {
+  transform:
+    translate(-50%, -50%)
+    rotateX(68deg)
+    rotateZ(0deg);
+
+  animation: orbitRotate1 22s linear infinite;
+}
+
+.orbit-2 {
+  transform:
+    translate(-50%, -50%)
+    rotateY(68deg)
+    rotateZ(30deg);
+
+  animation: orbitRotate2 28s linear infinite reverse;
+}
+
+.orbit-3 {
+  transform:
+    translate(-50%, -50%)
+    rotateX(62deg)
+    rotateY(25deg);
+
+  animation: orbitRotate3 34s linear infinite;
+}
+
+.ai-orbit span {
+  position: absolute;
+
+  top: 50%;
+  left: 0;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: rgba(103, 232, 249, 0.9);
+
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.8),
+    0 0 25px rgba(34, 211, 238, 0.3);
+}
+
+.ai-core {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 80px;
+  height: 80px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(34, 211, 238, 0.12),
+      rgba(139, 92, 246, 0.05) 45%,
+      transparent 70%
+    );
+
+  box-shadow:
+    0 0 50px rgba(34, 211, 238, 0.08);
+
+  animation: corePulse 5s ease-in-out infinite;
+}
+
+.ai-core-inner {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 14px;
+  height: 14px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: rgba(103, 232, 249, 0.65);
+
+  box-shadow:
+    0 0 15px rgba(34, 211, 238, 0.8),
+    0 0 40px rgba(34, 211, 238, 0.3);
+}
+
+
+@keyframes orbitRotate1 {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(68deg)
+      rotateZ(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(68deg)
+      rotateZ(360deg);
+  }
+}
+
+@keyframes orbitRotate2 {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateY(68deg)
+      rotateZ(30deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateY(68deg)
+      rotateZ(390deg);
+  }
+}
+
+@keyframes orbitRotate3 {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotateX(62deg)
+      rotateY(25deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotateX(62deg)
+      rotateY(25deg)
+      rotateZ(360deg);
+  }
+}
+
+@keyframes corePulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.ai-vignette {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(2, 6, 23, 0.05),
+      rgba(2, 6, 23, 0.35)
+    );
+
+  box-shadow:
+    inset 0 0 180px rgba(2, 6, 23, 0.7);
+}
+
+
+/* =========================================================
+   PERFORMANCE / ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-glow,
+  .ai-grid,
+  .ai-network-line,
+  .ai-node,
+  .ai-particle,
+  .ai-orbit,
+  .ai-core {
+    animation: none !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+  .ai-grid {
+    background-size: 55px 55px;
+  }
+
+  .ai-network {
+    opacity: 0.3;
+  }
+
+  .ai-orbit-wrapper {
+    width: 330px;
+    height: 330px;
+
+    top: 28%;
+  }
+
+  .ai-glow {
+    width: 280px;
+    height: 280px;
+
+    filter: blur(90px);
+  }
+}
+
+/* =========================================================
+   AI ARCHITECTURE
+========================================================= */
+
+.ai-architecture {
+  position: relative;
+  overflow: hidden;
+
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(0, 0, 0, 0.18)
+    );
+}
+
+
+/* =========================================================
+   LIVE STATUS
+========================================================= */
+
+.ai-live-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: rgba(52, 211, 153, 0.9);
+
+  box-shadow:
+    0 0 8px rgba(52, 211, 153, 0.7);
+
+  animation: aiLivePulse 2s ease-in-out infinite;
+}
+
+@keyframes aiLivePulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+
+/* =========================================================
+   PIPELINE
+========================================================= */
+
+.ai-pipeline {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  padding: 8px 0 12px;
+
+  scrollbar-width: none;
+}
+
+.ai-pipeline::-webkit-scrollbar {
+  display: none;
+}
+
+.ai-pipeline-step {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   NODE
+========================================================= */
+
+.ai-pipeline-node {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-width: 118px;
+
+  padding: 10px 11px;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.ai-pipeline-node:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(34, 211, 238, 0.25);
+
+  background: rgba(34, 211, 238, 0.045);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.ai-pipeline-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  border-radius: 9px;
+
+  color: rgba(148, 163, 184, 0.9);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  font-size: 11px;
+}
+
+.ai-node-input .ai-pipeline-icon,
+.ai-node-backend .ai-pipeline-icon {
+  color: rgba(103, 232, 249, 0.9);
+
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.ai-node-ai .ai-pipeline-icon {
+  color: rgba(196, 181, 253, 0.9);
+
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.ai-node-llm .ai-pipeline-icon {
+  color: rgba(103, 232, 249, 0.95);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(34, 211, 238, 0.1),
+      rgba(139, 92, 246, 0.1)
+    );
+}
+
+.ai-node-output .ai-pipeline-icon {
+  color: rgba(52, 211, 153, 0.9);
+
+  background: rgba(52, 211, 153, 0.06);
+}
+
+
+/* =========================================================
+   NODE STATUS
+========================================================= */
+
+.ai-node-status {
+  position: absolute;
+
+  right: 8px;
+  top: 8px;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: rgba(52, 211, 153, 0.7);
+
+  box-shadow:
+    0 0 7px rgba(52, 211, 153, 0.5);
+
+  animation: nodeStatus 2.5s ease-in-out infinite;
+}
+
+@keyframes nodeStatus {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   CONNECTION
+========================================================= */
+
+.ai-connection {
+  position: relative;
+
+  width: 42px;
+  height: 24px;
+
+  flex-shrink: 0;
+}
+
+.ai-connection-line {
+  position: absolute;
+
+  left: 4px;
+  right: 4px;
+  top: 50%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(34, 211, 238, 0.05),
+      rgba(34, 211, 238, 0.3),
+      rgba(139, 92, 246, 0.15)
+    );
+}
+
+
+/* =========================================================
+   MOVING DATA PACKET
+========================================================= */
+
+.ai-data-packet {
+  position: absolute;
+
+  top: calc(50% - 2px);
+  left: 4px;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: rgba(103, 232, 249, 0.95);
+
+  box-shadow:
+    0 0 7px rgba(34, 211, 238, 0.9),
+    0 0 15px rgba(34, 211, 238, 0.35);
+
+  animation: aiPacketFlow 2.4s linear infinite;
+}
+
+.packet-0 {
+  animation-delay: 0s;
+}
+
+.packet-1 {
+  animation-delay: 0.4s;
+}
+
+.packet-2 {
+  animation-delay: 0.8s;
+}
+
+.packet-3 {
+  animation-delay: 1.2s;
+}
+
+.packet-4 {
+  animation-delay: 1.6s;
+}
+
+
+@keyframes aiPacketFlow {
+  0% {
+    left: 4px;
+
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 34px;
+
+    opacity: 0;
+  }
+}
+
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.ai-metric {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding: 9px 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.ai-metric span {
+  font-size: 8px;
+
+  letter-spacing: 0.14em;
+
+  color: rgba(100, 116, 139, 0.8);
+}
+
+.ai-metric strong {
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+
+  color: rgba(103, 232, 249, 0.75);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+  .ai-architecture {
+    padding: 16px;
+  }
+
+  .ai-pipeline-node {
+    min-width: 108px;
+  }
+
+  .ai-connection {
+    width: 28px;
+  }
+
+  .ai-data-packet {
+    animation-duration: 2s;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-live-dot,
+  .ai-node-status,
+  .ai-data-packet {
+    animation: none;
+  }
+}
