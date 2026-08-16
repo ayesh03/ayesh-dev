@@ -612,9 +612,11 @@ const response = await ai.models.generateContent({
       reply: response.text,
     });
   } catch (error) {
-    console.error("Gemini API error:", error);
+  console.error("Gemini API error:", error);
+  console.error("Error message:", error?.message);
+  console.error("Error stack:", error?.stack);
 
-    return Response.json(
+  return Response.json(
       {
         error: "Unable to generate AI response.",
       },
