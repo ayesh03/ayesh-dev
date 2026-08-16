@@ -5,10 +5,15 @@ const RATE_WINDOW = 60 * 1000; // 1 minute
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
+if (!GEMINI_API_KEY) {
+  throw new Error("GEMINI_API_KEY is not configured.");
+}
+
+const ai = new GoogleGenAI({
+  apiKey: GEMINI_API_KEY,
+});
 const AYESH_CONTEXT = `
 You are "Ayesh AI", the personal AI assistant for Ayesh Ranjan Bhuyan's developer portfolio.
 
@@ -599,7 +604,7 @@ export async function POST(request) {
 ];
 
 const response = await ai.models.generateContent({
-  model: "gemini-3.5-flash",
+  model: "gemini-2.5-flash",
   contents,
   config: {
     systemInstruction: AYESH_CONTEXT,
